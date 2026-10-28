@@ -73,13 +73,13 @@ litros_por_anio = litros_por_semana * 52
 st.write("### Resultados estimados de desperdicio:")
 res_col1, res_col2, res_col3 = st.columns(3)
 
-with res_col1:
+with res_col3:
     st.metric("Por cada ducha", f"{litros_por_ducha} litros")
 
 with res_col2:
     st.metric("Por semana", f"{litros_por_semana:,.0f} litros")
 
-with res_col3:
+with res_col1:
     st.metric("Por año", f"{litros_por_anio:,.0f} litros")
 
 if litros_por_anio > 0:
