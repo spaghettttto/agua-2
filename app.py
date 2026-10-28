@@ -114,7 +114,7 @@ with col1:
 with col2:
     periodo_seleccionado = st.selectbox(
         "Selecciona el periodo:", periodos, index=3
-    )  # Default 2021-2025
+    )
 
 st.markdown("---")
 
@@ -192,11 +192,15 @@ with res_col3:
 if litros_por_anio > 0:
     df_grafica = pd.DataFrame(
         {
-            "Frecuencia": ["Por Ducha", "Por Semana", "Por Año (en miles)"],
-            "Litros": [
+            "Frecuencia": [
+                "1. Por Ducha (Litros)",
+                "2. Por Semana (Litros)",
+                "3. Por Año (Litros)",
+            ],
+            "Litros Desperdiciados": [
                 litros_por_ducha,
                 litros_por_semana,
-                litros_por_anio / 1000,
+                litros_por_anio,
             ],
         }
     )
