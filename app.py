@@ -1,10 +1,6 @@
 import pandas as pd
 import streamlit as st
 
-st.set_page_config(page_title="El agua en México: Disponibilidad y Desperdicio💧", layout="centered")
-
-st.markdown("<style>.main {background-color: #F4F8FB;} h1 {color: #1B4965; text-align: center;} h3 {color: #62B6CB;}</style>", unsafe_allow_html=True)
-
 st.title("💧 El agua en México: disponibilidad, calidad y desperdicio")
 st.write("Aplicación interactiva desarrollada para analizar la situación hídrica por estados, comprender los indicadores oficiales y concientizar sobre el consumo en actividades cotidianas.")
 
