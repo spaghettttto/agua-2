@@ -1,10 +1,14 @@
 import pandas as pd
 import streamlit as st
+import altair as alt
+
+st.set_page_config(page_title="El agua en México: Disponibilidad y Desperdicio💧", layout="centered")
+
+st.markdown("<style>.main {background-color: #F4F8FB;} h1 {color: #1B4965; text-align: center;} h3 {color: #62B6CB;}</style>", unsafe_allow_html=True)
 
 st.title("💧 El agua en México: disponibilidad, calidad y desperdicio")
 st.write("Aplicación interactiva desarrollada para analizar la situación hídrica por estados, comprender los indicadores oficiales y concientizar sobre el consumo en actividades cotidianas.")
 
-st.markdown("---")
 
 estados_mexico = ["Aguascalientes", "Baja California", "Baja California Sur", "Campeche", "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima", "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo", "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca", "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa", "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán", "Zacatecas"]
 estados_mexico = sorted(list(set(estados_mexico)))
@@ -24,7 +28,6 @@ with col1:
 with col2:
     periodo_seleccionado = st.selectbox("Selecciona el periodo:", periodos, index=3)
 
-st.markdown("---")
 
 st.subheader("2. Indicadores Hídricos")
 
@@ -45,7 +48,7 @@ with col_m2:
     st.info("💡 **¿Qué significa este indicador?**\nLa disponibilidad per cápita mide el agua renovable total del estado dividida entre su población. **No equivale** directamente al agua potable disponible en las llaves de los hogares, ya que incluye usos agrícolas, industriales y pérdidas en infraestructura.")
 
 st.write(f"### Calidad y Monitoreo del Agua en {estado_seleccionado}")
-st.write(f"Los reportes de calidad del agua se basan en los sitios de monitoreo de cuerpos de agua superficiales y subterráneos administrados por la **CONAGUA**. Es importante destacar que la calidad varía drásticamente entre cuencas, pozos y plantas potabilizadoras locales; por lo tanto, no se puede afirmar de forma generalizada que toda el agua de un estado sea completamente potable o no potable a partir de una sola medición puntual.")
+st.write(f"Los reportes de calidad del agua se basan en los sitios de monitoreo de cuerpos de agua superficiales y subterráneos administrados por la **CONAGUA**. Es importante destacar que la calidad varía drastically entre cuencas, pozos y plantas potabilizadoras locales; por lo tanto, no se puede afirmar de forma generalizada que toda el agua de un estado sea completamente potable o no potable a partir de una sola medición puntual.")
 
 st.markdown("---")
 
@@ -80,22 +83,20 @@ with res_col3:
     st.metric("Por año", f"{litros_por_anio:,.0f} litros")
 
 if litros_por_anio > 0:
-    df_grafica = pd.DataFrame({"Litros": [litros_por_ducha, litros_por_semana, litros_por_anio]}, index=["Por ducha", "Por semana", "Por año"])
-    st.bar_chart(df_grafica)
+    df_grafica = pd.DataFrame({"Frecuencia": ["Por ducha", "Por semana", "Por año"], "Litros": [litros_por_ducha, litros_por_semana, litros_por_anio]})
+    chart = alt.Chart(df_grafica).mark_bar(color="#62B6CB").encode(x=alt.X("Frecuencia:N", sort=["Por ducha", "Por semana", "Por año"], title=None, axis=alt.Axis(labelAngle=0)), y=alt.Y("Litros:Q", title="Litros"))
+    st.altair_chart(chart, use_container_width=True)
 
 st.write("⚠️ *Nota metodológica:* Estos valores son estimaciones matemáticas basadas en los parámetros seleccionados. El caudal real depende directamente del tipo de llave, la presión de la red hidráulica y el diseño de la regadera.")
-
-st.markdown("---")
 
 st.subheader("4. Recomendaciones prácticas")
 st.success("**Acciones sencillas para reducir el consumo en casa:**\n\n1. **Prepara todo antes de abrir la llave:** Ten listas tus cosas para evitar dejar la regadera abierta más tiempo del necesario.\n2. **Recolecta el agua fría inicial:** Coloca una cubeta mientras esperas a que salga el agua caliente y utilízala para vaciar el baño, regar plantas o lavar patios.\n3. **Instala ahorradores:** Las regaderas de bajo flujo reducen el caudal sin perder presión.\n4. **Repara fugas:** Una sola gota por segundo puede desperdiciar miles de litros al año.")
 
-st.markdown("---")
 
 st.subheader("5. Fuentes de información oficiales")
 st.write("Para garantizar la veracidad del proyecto, los datos e indicadores provienen de instituciones oficiales:")
 
-st.markdown("""
+
 - **CONAGUA (Comisión Nacional del Agua)**
   - *Documento:* Estadísticas del Agua en México / Atlas del Agua.
   - *Institución:* Secretaría de Medio Ambiente y Recursos Naturales (SEMARNAT).
