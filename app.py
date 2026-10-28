@@ -1,120 +1,32 @@
 import pandas as pd
 import streamlit as st
 
-st.set_page_config(
-    page_title="El agua en México: Disponibilidad y Desperdicio",
-    page_icon="💧",
-    layout="centered",
-)
+st.set_page_config(page_title="El agua en México: Disponibilidad y Desperdicio💧", layout="centered")
 
-st.markdown(
-    """
-    <style>
-    .main {background-color: #F4F8FB;}
-    h1 {color: #1B4965;text-align: center;}
-    h3 {color: #62B6CB;}
-    </style>
-""",
-    unsafe_allow_html=True,
-)
+st.markdown("<style>.main {background-color: #F4F8FB;} h1 {color: #1B4965; text-align: center;} h3 {color: #62B6CB;}</style>", unsafe_allow_html=True)
 
 st.title("💧 El agua en México: disponibilidad, calidad y desperdicio")
-st.write(
-    "Aplicación interactiva desarrollada para analizar la situación hídrica por estados, "
-    "comprender los indicadores oficiales y concientizar sobre el consumo en actividades cotidianas."
-)
+st.write("Aplicación interactiva desarrollada para analizar la situación hídrica por estados, comprender los indicadores oficiales y concientizar sobre el consumo en actividades cotidianas.")
 
 st.markdown("---")
 
-estados_mexico = [
-    "Aguascalientes",
-    "Baja California",
-    "Baja California Sur",
-    "Campeche",
-    "Chiapas",
-    "Chihuahua",
-    "Ciudad de México",
-    "Coahuila",
-    "Colima",
-    "Durango",
-    "Estado de México",
-    "Guanajuato",
-    "Guerrero",
-    "Hidalgo",
-    "Jalisco",
-    "Michoacán",
-    "Morelos",
-    "Nayarit",
-    "Nuevo León",
-    "Oaxaca",
-    "Puebla",
-    "Querétaro",
-    "Quintana Roo",
-    "San Luis Potosí",
-    "Sinaloa",
-    "Sonora",
-    "Tabasco",
-    "Tamaulipas",
-    "Tlaxcala",
-    "Veracruz",
-    "Yucatán",
-    "Zacatecas",
-]
-
+estados_mexico = ["Aguascalientes", "Baja California", "Baja California Sur", "Campeche", "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima", "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo", "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca", "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa", "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán", "Zacatecas"]
 estados_mexico = sorted(list(set(estados_mexico)))
 
-periodos = [
-    "2006-2010",
-    "2011-2015",
-    "2016-2020",
-    "2021-2025",
-    "2026-2030",
-    "Dato más reciente disponible",
-]
+periodos = ["2006-2010", "2011-2015", "2016-2020", "2021-2025", "2026-2030", "Dato más reciente disponible"]
 
-datos_disponibilidad = {
-    "Chihuahua": {
-        "2006-2010": 1850,
-        "2011-2015": 1720,
-        "2016-2020": 1610,
-        "2021-2025": 1540,
-        "2026-2030": "Sin datos disponibles",
-        "Dato más reciente disponible": 1540,
-    },
-    "Nuevo León": {
-        "2006-2010": 1300,
-        "2011-2015": 1200,
-        "2016-2020": 1100,
-        "2021-2025": 1020,
-        "2026-2030": "Sin datos disponibles",
-        "Dato más reciente disponible": 1020,
-    },
-    "Tabasco": {
-        "2006-2010": 22000,
-        "2011-2015": 21500,
-        "2016-2020": 20800,
-        "2021-2025": 19900,
-        "2026-2030": "Sin datos disponibles",
-        "Dato más reciente disponible": 19900,
-    },
-}
+datos_disponibilidad = {"Chihuahua": {"2006-2010": 1850, "2011-2015": 1720, "2016-2020": 1610, "2021-2025": 1540, "2026-2030": "Sin datos disponibles", "Dato más reciente disponible": 1540}, "Nuevo León": {"2006-2010": 1300, "2011-2015": 1200, "2016-2020": 1100, "2021-2025": 1020, "2026-2030": "Sin datos disponibles", "Dato más reciente disponible": 1020}, "Tabasco": {"2006-2010": 22000, "2011-2015": 21500, "2016-2020": 20800, "2021-2025": 19900, "2026-2030": "Sin datos disponibles", "Dato más reciente disponible": 19900}}
 
 st.subheader("1. Consulta por Estado y Periodo")
 
 col1, col2 = st.columns(2)
 
 with col1:
-    default_index = (
-        estados_mexico.index("Chihuahua") if "Chihuahua" in estados_mexico else 0
-    )
-    estado_seleccionado = st.selectbox(
-        "Selecciona un estado de México:", estados_mexico, index=default_index
-    )
+    default_index = estados_mexico.index("Chihuahua") if "Chihuahua" in estados_mexico else 0
+    estado_seleccionado = st.selectbox("Selecciona un estado de México:", estados_mexico, index=default_index)
 
 with col2:
-    periodo_seleccionado = st.selectbox(
-        "Selecciona el periodo:", periodos, index=3
-    )
+    periodo_seleccionado = st.selectbox("Selecciona el periodo:", periodos, index=3)
 
 st.markdown("---")
 
@@ -129,38 +41,20 @@ col_m1, col_m2 = st.columns(2)
 
 with col_m1:
     if isinstance(disp_valor, (int, float)):
-        st.metric(
-            label=f"Disponibilidad en {estado_seleccionado} ({periodo_seleccionado})",
-            value=f"{disp_valor:,.0f} m³/hab/año",
-        )
+        st.metric(label=f"Disponibilidad en {estado_seleccionado} ({periodo_seleccionado})", value=f"{disp_valor:,.0f} m³/hab/año")
     else:
-        st.metric(
-            label=f"Disponibilidad en {estado_seleccionado} ({periodo_seleccionado})",
-            value=disp_valor,
-        )
+        st.metric(label=f"Disponibilidad en {estado_seleccionado} ({periodo_seleccionado})", value=disp_valor)
 
 with col_m2:
-    st.info(
-        "💡 **¿Qué significa este indicador?**\n"
-        "La disponibilidad per cápita mide el agua renovable total del estado dividida entre "
-        "su población. **No equivale** directamente al agua potable disponible en las llaves de los hogares, "
-        "ya que incluye usos agrícolas, industriales y pérdidas en infraestructura."
-    )
+    st.info("💡 **¿Qué significa este indicador?**\nLa disponibilidad per cápita mide el agua renovable total del estado dividida entre su población. **No equivale** directamente al agua potable disponible en las llaves de los hogares, ya que incluye usos agrícolas, industriales y pérdidas en infraestructura.")
 
 st.write(f"### Calidad y Monitoreo del Agua en {estado_seleccionado}")
-st.write(
-    f"Los reportes de calidad del agua se basan en los sitios de monitoreo de cuerpos de agua superficiales y subterráneos "
-    f"administrados por la **CONAGUA**. Es importante destacar que la calidad varía drásticamente entre cuencas, pozos "
-    f"y plantas potabilizadoras locales; por lo tanto, no se puede afirmar de forma generalizada que toda el agua de un estado "
-    f"sea completamente potable o no potable a partir de una sola medición puntual."
-)
+st.write(f"Los reportes de calidad del agua se basan en los sitios de monitoreo de cuerpos de agua superficiales y subterráneos administrados por la **CONAGUA**. Es importante destacar que la calidad varía drásticamente entre cuencas, pozos y plantas potabilizadoras locales; por lo tanto, no se puede afirmar de forma generalizada que toda el agua de un estado sea completamente potable o no potable a partir de una sola medición puntual.")
 
 st.markdown("---")
 
 st.subheader("3. Simulador de desperdicio de agua (Regadera)")
-st.write(
-    "Calcula cuánta agua se pierde mientras dejamos correr la regadera esperando a que salga caliente antes de entrar a bañarnos."
-)
+st.write("Calcula cuánta agua se pierde mientras dejamos correr la regadera esperando a que salga caliente antes de entrar a bañarnos.")
 
 col_s1, col_s2, col_s3 = st.columns(3)
 
@@ -190,48 +84,22 @@ with res_col3:
     st.metric("Por año", f"{litros_por_anio:,.0f} litros")
 
 if litros_por_anio > 0:
-    df_grafica = pd.DataFrame(
-        {
-            "Frecuencia": [
-                "1. Por Ducha (Litros)",
-                "2. Por Semana (Litros)",
-                "3. Por Año (Litros)",
-            ],
-            "Litros Desperdiciados": [
-                litros_por_ducha,
-                litros_por_semana,
-                litros_por_anio,
-            ],
-        }
-    )
-    df_grafica.set_index("Frecuencia", inplace=True)
+    df_grafica = pd.DataFrame({"Litros": [litros_por_ducha, litros_por_semana, litros_por_anio]}, index=["Por ducha", "Por semana", "Por año"])
     st.bar_chart(df_grafica)
 
-st.write(
-    "⚠️ *Nota metodológica:* Estos valores son estimaciones matemáticas basadas en los parámetros seleccionados. "
-    "El caudal real depende directamente del tipo de llave, la presión de la red hidráulica y el diseño de la regadera."
-)
+st.write("⚠️ *Nota metodológica:* Estos valores son estimaciones matemáticas basadas en los parámetros seleccionados. El caudal real depende directamente del tipo de llave, la presión de la red hidráulica y el diseño de la regadera.")
 
 st.markdown("---")
 
 st.subheader("4. Recomendaciones prácticas")
-st.success(
-    "**Acciones sencillas para reducir el consumo en casa:**\n\n"
-    "1. **Prepara todo antes de abrir la llave:** Ten listas tus cosas para evitar dejar la regadera abierta más tiempo del necesario.\n"
-    "2. **Recolecta el agua fría inicial:** Coloca una cubeta mientras esperas a que salga el agua caliente y utilízala para vaciar el baño, regar plantas o lavar patios.\n"
-    "3. **Instala ahorradores:** Las regaderas de bajo flujo reducen el caudal sin perder presión.\n"
-    "4. **Repara fugas:** Una sola gota por segundo puede desperdiciar miles de litros al año."
-)
+st.success("**Acciones sencillas para reducir el consumo en casa:**\n\n1. **Prepara todo antes de abrir la llave:** Ten listas tus cosas para evitar dejar la regadera abierta más tiempo del necesario.\n2. **Recolecta el agua fría inicial:** Coloca una cubeta mientras esperas a que salga el agua caliente y utilízala para vaciar el baño, regar plantas o lavar patios.\n3. **Instala ahorradores:** Las regaderas de bajo flujo reducen el caudal sin perder presión.\n4. **Repara fugas:** Una sola gota por segundo puede desperdiciar miles de litros al año.")
 
 st.markdown("---")
 
 st.subheader("5. Fuentes de información oficiales")
-st.write(
-    "Para garantizar la veracidad del proyecto, los datos e indicadores provienen de instituciones oficiales:"
-)
+st.write("Para garantizar la veracidad del proyecto, los datos e indicadores provienen de instituciones oficiales:")
 
-st.markdown(
-    """
+st.markdown("""
 - **CONAGUA (Comisión Nacional del Agua)**
   - *Documento:* Estadísticas del Agua en México / Atlas del Agua.
   - *Institución:* Secretaría de Medio Ambiente y Recursos Naturales (SEMARNAT).
@@ -248,5 +116,4 @@ st.markdown(
 - **FAO (Organización de las Naciones Unidas para la Alimentación y la Agricultura)**
   - *Documento:* Base de datos global de recursos hídricos (AQUASTAT).
   - *Enlace:* [https://www.fao.org/](https://www.fao.org/)
-"""
-)
+""")
