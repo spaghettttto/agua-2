@@ -7,7 +7,6 @@ st.markdown("<style>.main {background-color: #F4F8FB;} h1 {color: #1B4965; text-
 st.title("💧 El agua en México: disponibilidad, calidad y desperdicio")
 st.write("Aplicación interactiva desarrollada para analizar la situación hídrica por estados, comprender los indicadores oficiales y concientizar sobre el consumo en actividades cotidianas.")
 
-
 estados_mexico = ["Aguascalientes", "Baja California", "Baja California Sur", "Campeche", "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima", "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo", "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca", "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa", "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán", "Zacatecas"]
 estados_mexico = sorted(list(set(estados_mexico)))
 
@@ -25,7 +24,6 @@ with col1:
 
 with col2:
     periodo_seleccionado = st.selectbox("Selecciona el periodo:", periodos, index=3)
-
 
 st.subheader("2. Indicadores Hídricos")
 
@@ -46,7 +44,7 @@ with col_m2:
     st.info("💡 **¿Qué significa este indicador?**\nLa disponibilidad per cápita mide el agua renovable total del estado dividida entre su población. **No equivale** directamente al agua potable disponible en las llaves de los hogares, ya que incluye usos agrícolas, industriales y pérdidas en infraestructura.")
 
 st.write(f"### Calidad y Monitoreo del Agua en {estado_seleccionado}")
-st.write(f"Los reportes de calidad del agua se basan en los sitios de monitoreo de cuerpos de agua superficiales y subterráneos administrados por la **CONAGUA**. Es importante destacar que la calidad varía drastically entre cuencas, pozos y plantas potabilizadoras locales; por lo tanto, no se puede afirmar de forma generalizada que toda el agua de un estado sea completamente potable o no potable a partir de una sola medición puntual.")
+st.write(f"Los reportes de calidad del agua se basan en los sitios de monitoreo de cuerpos de agua superficiales y subterráneos administrados por la **CONAGUA**. Es importante destacar que la calidad varía drásticamente entre cuencas, pozos y plantas potabilizadoras locales; por lo tanto, no se puede afirmar de forma generalizada que toda el agua de un estado sea completamente potable o no potable a partir de una sola medición puntual.")
 
 st.markdown("---")
 
@@ -71,13 +69,13 @@ litros_por_anio = litros_por_semana * 52
 st.write("### Resultados estimados de desperdicio:")
 res_col1, res_col2, res_col3 = st.columns(3)
 
-with res_col3:
+with res_col1:
     st.metric("Por cada ducha", f"{litros_por_ducha} litros")
 
 with res_col2:
     st.metric("Por semana", f"{litros_por_semana:,.0f} litros")
 
-with res_col1:
+with res_col3:
     st.metric("Por año", f"{litros_por_anio:,.0f} litros")
 
 if litros_por_anio > 0:
@@ -90,24 +88,9 @@ st.write("⚠️ *Nota metodológica:* Estos valores son estimaciones matemátic
 st.subheader("4. Recomendaciones prácticas")
 st.success("**Acciones sencillas para reducir el consumo en casa:**\n\n1. **Prepara todo antes de abrir la llave:** Ten listas tus cosas para evitar dejar la regadera abierta más tiempo del necesario.\n2. **Recolecta el agua fría inicial:** Coloca una cubeta mientras esperas a que salga el agua caliente y utilízala para vaciar el baño, regar plantas o lavar patios.\n3. **Instala ahorradores:** Las regaderas de bajo flujo reducen el caudal sin perder presión.\n4. **Repara fugas:** Una sola gota por segundo puede desperdiciar miles de litros al año.")
 
-
 st.subheader("5. Fuentes de información oficiales")
 st.write("Para garantizar la veracidad del proyecto, los datos e indicadores provienen de instituciones oficiales:")
 
+fuentes_texto = "- **CONAGUA (Comisión Nacional del Agua)**\n  - *Documento:* Estadísticas del Agua en México / Atlas del Agua.\n  - *Institución:* Secretaría de Medio Ambiente y Recursos Naturales (SEMARNAT).\n  - *Enlace:* [https://www.gob.mx/conagua](https://www.gob.mx/conagua)\n\n- **Sistema de Información del Agua (CONAGUA)**\n  - *Documento:* Monitoreo de disponibilidad y calidad del agua por regiones hidrológicas.\n  - *Enlace:* [https://app.conagua.gob.mx/sistemasdeagua/](https://app.conagua.gob.mx/sistemasdeagua/)\n\n- **INEGI (Instituto Nacional de Estadística y Geografía)**\n  - *Documento:* Censos de población y estadísticas sobre servicios de agua potable y saneamiento.\n  - *Enlace:* [https://www.inegi.org.mx/](https://www.inegi.org.mx/)\n\n- **FAO (Organización de las Naciones Unidas para la Alimentación y la Agricultura)**\n  - *Documento:* Base de datos global de recursos hídricos (AQUASTAT).\n  - *Enlace:* [https://www.fao.org/](https://www.fao.org/)"
 
-- **CONAGUA (Comisión Nacional del Agua)**^
-  - *Documento:* Estadísticas del Agua en México / Atlas del Agua.
-  - *Institución:* Secretaría de Medio Ambiente y Recursos Naturales (SEMARNAT).
-  - *Enlace:* [https://www.gob.mx/conagua](https://www.gob.mx/conagua)
-
-- **Sistema de Información del Agua (CONAGUA)**
-  - *Documento:* Monitoreo de disponibilidad y calidad del agua por regiones hidrológicas.
-  - *Enlace:* [https://app.conagua.gob.mx/sistemasdeagua/](https://app.conagua.gob.mx/sistemasdeagua/)
-
-- **INEGI (Instituto Nacional de Estadística y Geografía)**
-  - *Documento:* Censos de población y estadísticas sobre servicios de agua potable y saneamiento.
-  - *Enlace:* [https://www.inegi.org.mx/](https://www.inegi.org.mx/)
-
-- **FAO (Organización de las Naciones Unidas para la Alimentación y la Agricultura)**
-  - *Documento:* Base de datos global de recursos hídricos (AQUASTAT).
-  - *Enlace:* [https://www.fao.org/](https://www.fao.org/)
+st.markdown(fuentes_texto)
