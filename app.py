@@ -97,7 +97,7 @@ st.subheader("5. Fuentes de información oficiales")
 st.write("Para garantizar la veracidad del proyecto, los datos e indicadores provienen de instituciones oficiales:")
 
 
-- **CONAGUA (Comisión Nacional del Agua)**
+- **CONAGUA (Comisión Nacional del Agua)**^
   - *Documento:* Estadísticas del Agua en México / Atlas del Agua.
   - *Institución:* Secretaría de Medio Ambiente y Recursos Naturales (SEMARNAT).
   - *Enlace:* [https://www.gob.mx/conagua](https://www.gob.mx/conagua)
