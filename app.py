@@ -127,8 +127,8 @@ st.info("💡 **¿Qué significan estos indicadores?**\n"
 
 st.markdown("---")
 
-st.subheader("3. Simulador de desperdicio de agua en equivalente a botellas")
-st.write("Calcula cuántas **botellas de agua de 500 ml** desperdicias mientras esperas a que salga el agua caliente en la regadera.")
+st.subheader("3. Simulador de desperdicio en botellas de agua (500 ml)")
+st.write("Calcula cuántas **botellas de 500 ml** y cuánto dinero tirarías a la basura si compraras esa misma cantidad de agua embotellada mientras esperas a que salga la caliente en la regadera.")
 
 col_s1, col_s2, col_s3, col_s4 = st.columns(4)
 
@@ -142,55 +142,61 @@ with col_s3:
     frecuencia_semanal = st.slider("Duchas por semana:", 1, 14, 7)
 
 with col_s4:
-    costo_m3 = st.number_input("Costo estimado del m³ ($ MXN):", value=25.0, step=5.0)
+    costo_botella = st.number_input("Precio por botella de 500ml ($ MXN):", value=15.0, step=1.0)
 
-# Cálculos de litros, costo y botellas de 500 ml (0.5 L)
-costo_por_litro = costo_m3 / 1000.0
-
+# Cálculo de litros
 litros_ducha = minutos_espera * caudal_regadera
 litros_semana = litros_ducha * frecuencia_semanal
+litros_mes = litros_semana * 4.33  # Promedio de semanas por mes
 litros_anio = litros_semana * 52
 
-# Cada litro equivale a 2 botellas de 500 ml (1 L / 0.5 L)
-botellas_ducha = int(litros_ducha * 2)
-botellas_semana = int(litros_semana * 2)
-botellas_anio = int(litros_anio * 2)
+# Cálculo de botellas de 500 ml (1 L = 2 botellas)
+botellas_ducha = litros_ducha * 2
+botellas_semana = litros_semana * 2
+botellas_mes = litros_mes * 2
+botellas_anio = litros_anio * 2
 
-costo_ducha = litros_ducha * costo_por_litro
-costo_semana = litros_semana * costo_por_litro
-costo_anio = litros_anio * costo_por_litro
+# Costo equivalente en dinero comerciado
+costo_ducha = botellas_ducha * costo_botella
+costo_semana = botellas_semana * costo_botella
+costo_mes = botellas_mes * costo_botella
+costo_anio = botellas_anio * costo_botella
 
-st.write("### 🍼 Botellas de 500 ml tiradas a la basura:")
-res_col1, res_col2, res_col3 = st.columns(3)
+st.write("### 🫗 Impacto económico y volumen desperdiciado:")
+
+res_col1, res_col2, res_col3, res_col4 = st.columns(4)
 
 with res_col1:
-    st.metric("Por ducha", f"{botellas_ducha:,} botellas", f"${costo_ducha:,.2f} MXN")
+    st.metric("Por ducha", f"${costo_ducha:,.2f} MXN", f"{int(botellas_ducha):,} botellas")
 
 with res_col2:
-    st.metric("Por semana", f"{botellas_semana:,} botellas", f"${costo_semana:,.2f} MXN")
+    st.metric("Por semana", f"${costo_semana:,.2f} MXN", f"{int(botellas_semana):,} botellas")
 
 with res_col3:
-    st.metric("Por año", f"{botellas_anio:,} botellas", f"${costo_anio:,.2f} MXN")
+    st.metric("Por mes", f"${costo_mes:,.2f} MXN", f"{int(botellas_mes):,} botellas")
+
+with res_col4:
+    st.metric("Por año", f"${costo_anio:,.2f} MXN", f"{int(botellas_anio):,} botellas")
 
 if botellas_anio > 0:
     df_grafica = pd.DataFrame({
-        "Frecuencia": ["Por ducha", "Por semana", "Por año"], 
-        "Botellas_500ml": [botellas_ducha, botellas_semana, botellas_anio],
-        "Litros": [litros_ducha, litros_semana, litros_anio]
+        "Periodo": ["Por ducha", "Por semana", "Por mes", "Por año"], 
+        "Costo_MXN": [costo_ducha, costo_semana, costo_mes, costo_anio],
+        "Botellas": [botellas_ducha, botellas_semana, botellas_mes, botellas_anio]
     })
     
     chart = alt.Chart(df_grafica).mark_bar(color="#62B6CB").encode(
-        x=alt.X("Frecuencia:N", sort=["Por ducha", "Por semana", "Por año"], title=None, axis=alt.Axis(labelAngle=0)),
-        y=alt.Y("Botellas_500ml:Q", title="Cantidad de botellas (500 ml)"),
+        x=alt.X("Periodo:N", sort=["Por ducha", "Por semana", "Por mes", "Por año"], title=None, axis=alt.Axis(labelAngle=0)),
+        y=alt.Y("Costo_MXN:Q", title="Dinero equivalente ($ MXN)"),
         tooltip=[
-            alt.Tooltip("Frecuencia:N", title="Frecuencia"),
-            alt.Tooltip("Botellas_500ml:Q", title="Botellas (500ml)", format=","),
-            alt.Tooltip("Litros:Q", title="Litros desperdiciados", format=",")
+            alt.Tooltip("Periodo:N", title="Periodo"),
+            alt.Tooltip("Costo_MXN:Q", title="Costo Estimado ($ MXN)", format="$,.2f"),
+            alt.Tooltip("Botellas:Q", title="Botellas (500 ml)", format=",.0f")
         ]
     )
     st.altair_chart(chart, use_container_width=True)
 
-st.write("⚠️ *Nota metodológica:* 1 litro equivale a 2 botellas de 500 ml. Estimación calculada con base en el costo promedio del m³ de agua potable urbana.")
+st.write("⚠️ *Nota metodológica:* Cada litro equivale a 2 botellas de 500 ml. El cálculo estimativo toma como referencia un costo promedio de $15.00 MXN por botella comercial.")
 
 st.subheader("4. Recomendaciones prácticas")
 st.success("**Acciones sencillas para reducir el consumo en casa:**\n\n1. **Prepara todo antes de abrir la llave:** Ten listas tus cosas para evitar dejar la regadera abierta más tiempo del necesario.\n2. **Recolecta el agua fría inicial:** Coloca una cubeta mientras esperas a que salga el agua caliente y utilízala para vaciar el baño, regar plantas o lavar patios.\n3. **Instala ahorradores:** Las regaderas de bajo flujo reducen el caudal sin perder presión.\n4. **Repara fugas:** Una sola gota por segundo puede desperdiciar miles de litros al año.")
